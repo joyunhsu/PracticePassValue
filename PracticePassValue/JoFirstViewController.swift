@@ -30,7 +30,7 @@ class JoFirstViewController: UIViewController {
     let fromSecond = Notification.Name(rawValue: secondVCNotificationKey)
     
     var inputObservationToken: NSKeyValueObservation?
-    var toSecondLabel = ""
+
     @objc dynamic var inputText: String?
     
     let KVOfirstInput = Input()
@@ -42,48 +42,58 @@ class JoFirstViewController: UIViewController {
         let mainStoryboard: UIStoryboard = UIStoryboard(name: "JoStoryboard", bundle: nil)
         let desVC = mainStoryboard.instantiateViewController(withIdentifier: "JoSecondViewController") as! JoSecondViewController
         
-        // Property
+        // Property v1 -> v2
         desVC.loadViewIfNeeded()
-        //        desVC.label.text = textField.text
+//        desVC.label.text = textField.text
         
-        // Notification
-        //        desVC.createObserver()
-        //        var dict: Dictionary<String, AnyObject> = Dictionary()
+        // Notification v1 -> v2
+//        desVC.createObserver()
+//        var dict: Dictionary<String, AnyObject> = Dictionary()
         guard let firstInput = textField.text else { return }
-        //        dict.updateValue("\(firstInput)" as AnyObject, forKey: "FIRST")
-        //        let name = Notification.Name(rawValue: firstVCNotificationKey)
-        //        NotificationCenter.default.post(name: name, object: nil, userInfo: dict)
+//        dict.updateValue("\(firstInput)" as AnyObject, forKey: "FIRST")
+//        let name = Notification.Name(rawValue: firstVCNotificationKey)
+//        NotificationCenter.default.post(name: name, object: nil, userInfo: dict)
         
         
         // KVO
-        KVOfirstInput.addObserver(desVC, forKeyPath: "input", options: .new, context: nil)
+//        KVOfirstInput.addObserver(desVC, forKeyPath: "input", options: .new, context: nil)
+//        KVOfirstInput.input = firstInput
+//
+//        desVC.KVOsecondInput2.addObserver(self, forKeyPath: "input", options: .new, context: nil)
+        
+//        guard inputObservationToken != nil else { return }
+        
+        // KVO v1 -> v2
+        inputObservationToken = KVOfirstInput.observe(\.input, options: .new, changeHandler: { (object, change) in
+            desVC.label.text = change.newValue
+        })
+        
         KVOfirstInput.input = firstInput
+ 
         
-        desVC.KVOsecondInput2.addObserver(self, forKeyPath: "input", options: .new, context: nil)
-        
-        
-        // Delegate
-        //        desVC.delegate = self
+        // Delegate v2 -> v1
+//        desVC.delegate = self
         
         
-        // Closure
-        //        desVC.onSave = onSave
+        // Closure v2 -> v1
+//        desVC.onSave = onSave
+        
+//        desVC.onSave = { [weak self] text in
+//            self?.onSave(text)
+//        }
+        
+        desVC.onSave = { [weak self] text in
+            self?.label.text = text
+        }
         
         self.navigationController?.pushViewController(desVC, animated: true)
         
     }
     
-    
-    // Closure
-    //    func onSave(_ data: String) -> () {
-    //        label.text = data
-    //    }
-
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        // Notification
+        // Notification v2 -> v1
         //        createObserver()
 
         
@@ -93,29 +103,20 @@ class JoFirstViewController: UIViewController {
         
     }
     
-    // KVO
-    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-        
-        if keyPath == "input" {
-            guard let updateText = change?[.newKey] as? String else { return }
-            label.text = updateText
-        }
-    }
     
-    // Notification
-    //    func createObserver() {
-    //        NotificationCenter.default.addObserver(self, selector: #selector(notifPassValue(notification:)), name: fromSecond, object: nil)
-    //    }
-    //
-    //    @objc func notifPassValue(notification: NSNotification) {
-    //        print("notification fired")
-    //        let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
-    //
-    //        if let input = userInfo["SECOND"] as? String {
-    //            self.label.text = input
-    //        }
-    //
-    //    }
+    // Notification v2 -> v1
+//    func createObserver() {
+//        NotificationCenter.default.addObserver(self, selector: #selector(notifPassValue(notification:)), name: fromSecond, object: nil)
+//    }
+//
+//    @objc func notifPassValue(notification: NSNotification) {
+//        let userInfo = notification.userInfo as! Dictionary<String, AnyObject>
+//
+//        if let input = userInfo["SECOND"] as? String {
+//            self.label.text = input
+//        }
+//
+//    }
     
 
 }
