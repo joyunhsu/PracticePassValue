@@ -28,7 +28,7 @@ class JoSecondViewController: UIViewController {
     
     var inputObservationToken: NSKeyValueObservation?
     
-    let KVOsecondInput2 = Input()
+    let KVOsecondInput = Input()
     
     @IBAction func toFirstPage(_ sender: UIButton) {
         
@@ -47,15 +47,17 @@ class JoSecondViewController: UIViewController {
 //        onSave?(input)
         
         // KVO v2 -> v1
-        inputObservationToken = KVOsecondInput2.observe(\.input, options: .new, changeHandler: { (object, change) in
+        inputObservationToken = KVOsecondInput.observe(\.input, options: .new, changeHandler: { (object, change) in
             
             let myVC = self.navigationController?.viewControllers[0] as! JoFirstViewController
             myVC.label.text = change.newValue
         })
         
-        KVOsecondInput2.input = input
+        KVOsecondInput.input = input
+        
         
         self.navigationController?.popViewController(animated: true)
+        
     }
     
     

@@ -14,14 +14,6 @@ class Input: NSObject {
 
 }
 
-//class SecondInput: NSObject {
-//    @objc dynamic var secondInput: String
-//
-//    init(secondInput: String) {
-//        self.secondInput = secondInput
-//    }
-//}
-
 class JoFirstViewController: UIViewController {
     
     @IBOutlet weak var textField: UITextField!
@@ -34,8 +26,6 @@ class JoFirstViewController: UIViewController {
     @objc dynamic var inputText: String?
     
     let KVOfirstInput = Input()
-    
-//    let KVOsecondInput = Input()
     
     @IBAction func toSecondPage(_ sender: UIButton) {
         
@@ -54,14 +44,6 @@ class JoFirstViewController: UIViewController {
 //        let name = Notification.Name(rawValue: firstVCNotificationKey)
 //        NotificationCenter.default.post(name: name, object: nil, userInfo: dict)
         
-        
-        // KVO
-//        KVOfirstInput.addObserver(desVC, forKeyPath: "input", options: .new, context: nil)
-//        KVOfirstInput.input = firstInput
-//
-//        desVC.KVOsecondInput2.addObserver(self, forKeyPath: "input", options: .new, context: nil)
-        
-//        guard inputObservationToken != nil else { return }
         
         // KVO v1 -> v2
         inputObservationToken = KVOfirstInput.observe(\.input, options: .new, changeHandler: { (object, change) in
@@ -82,9 +64,9 @@ class JoFirstViewController: UIViewController {
 //            self?.onSave(text)
 //        }
         
-        desVC.onSave = { [weak self] text in
-            self?.label.text = text
-        }
+//        desVC.onSave = { [weak self] text in
+//            self?.label.text = text
+//        }
         
         self.navigationController?.pushViewController(desVC, animated: true)
         
@@ -96,10 +78,6 @@ class JoFirstViewController: UIViewController {
         // Notification v2 -> v1
         //        createObserver()
 
-        
-//        observer = firstInput.observe(\.input, options: .new, changeHandler: { (objct, change) in
-//            print(change.newValue)
-//        })
         
     }
     
